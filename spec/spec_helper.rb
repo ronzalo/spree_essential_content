@@ -33,6 +33,8 @@ require 'selenium-webdriver'
 
 FactoryBot.find_definitions
 
+Capybara.server = :webrick
+
 RSpec.configure do |config|
   config.mock_with :rspec
   config.color = true
@@ -44,7 +46,7 @@ RSpec.configure do |config|
   config.include Spree::TestingSupport::Preferences
   config.include Spree::TestingSupport::Flash
   config.include Paperclip::Shoulda::Matchers
-  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
 
   config.extend Spree::TestingSupport::AuthorizationHelpers::Request, type: :feature
 
