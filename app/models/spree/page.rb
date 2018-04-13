@@ -1,4 +1,10 @@
-class Spree::Page < ActiveRecord::Base
+class Spree::Page < Spree::Base
+  translates :title, :nav_title, :path, :meta_title, :meta_description, :meta_keywords, fallbacks_for_empty_translations: true
+  include SpreeGlobalize::Translatable
+
+  extend FriendlyId
+  friendly_id :path
+
   acts_as_list
 
   RESERVED_PATHS = /(^\/+(admin|account|cart|checkout|content|login|logout|pg\/|orders|products|s\/|session|signup|shipments|states|t\/|tax_categories|user|paypal)+)/
@@ -15,6 +21,8 @@ class Spree::Page < ActiveRecord::Base
   has_many :images, -> { order(:position) }, as: :viewable, class_name: "Spree::PageImage", dependent: :destroy
   before_validation :set_defaults
   after_create :create_default_content
+
+  self.whitelisted_ransackable_attributes = %w[title path]
 
   def self.find_by_path(_path)
     return where(path: '__home__').first if (_path == "__home__" or _path == "/") && self.exists?(path: "/")

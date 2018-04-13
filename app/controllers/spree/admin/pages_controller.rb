@@ -16,7 +16,7 @@ module Spree
 
       private
         def find_resource
-          @object ||= Spree::Page.where(path: params[:id]).first
+          @object ||= Spree::Page.friendly.find(params[:id])
         end
 
         def collection

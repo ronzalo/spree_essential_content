@@ -104,7 +104,7 @@ feature "Pages", js: true do
 
   def then_i_should_see_it_removed_in_the_list
     expect(page).to have_current_path(spree.admin_pages_path)
-    expect(page).to have_content("Page \"#{@old_title}\" has been successfully removed!")
+    expect(page).to have_content("Page has been successfully removed!")
     expect(page).to_not have_selector('td', text: /#{@old_title}/i)
   end
 end
