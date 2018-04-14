@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Spree::PagesController < Spree::StoreController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
@@ -6,7 +8,7 @@ class Spree::PagesController < Spree::StoreController
 
   def show
     @page = current_page
-    raise ActionController::RoutingError.new("No route matches [GET] #{request.path}") if @page.nil?
+    raise ActionController::RoutingError, "No route matches [GET] #{request.path}" if @page.nil?
     if @page.root?
       @posts = Spree::Post.live.limit(5)
       render template: 'spree/pages/home'
@@ -14,7 +16,8 @@ class Spree::PagesController < Spree::StoreController
   end
 
   private
-    def accurate_title
-      @page.meta_title
-    end
+
+  def accurate_title
+    @page.meta_title
+  end
 end

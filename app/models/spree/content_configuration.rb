@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Spree::ContentConfiguration < Spree::Preferences::Configuration
   preference :disqus_shortname, :string, default: ''
   preference :sharethis_publisher_id, :string, default: ''

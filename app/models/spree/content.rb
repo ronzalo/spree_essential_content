@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Spree::Content < ActiveRecord::Base
   attr_accessor :delete_attachment
 
@@ -8,23 +10,23 @@ class Spree::Content < ActiveRecord::Base
   validates_presence_of :title, :page
 
   has_attached_file :attachment,
-    styles:        Proc.new{ |clip| clip.instance.attachment_sizes },
-    default_style: :preview,
-    url:           "/spree/contents/:id/:style/:basename.:extension",
-    path:          ":rails_root/public/spree/contents/:id/:style/:basename.:extension"
+                    styles:        proc { |clip| clip.instance.attachment_sizes },
+                    default_style: :preview,
+                    url:           '/spree/contents/:id/:style/:basename.:extension',
+                    path:          ':rails_root/public/spree/contents/:id/:style/:basename.:extension'
 
-  validates_attachment_content_type :attachment, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+  validates_attachment_content_type :attachment, content_type: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
 
   cattr_reader :per_page
   @@per_page = 10
 
-  scope :for, Proc.new{|context| where(context: context)}
+  scope :for, proc { |context| where(context: context) }
 
   before_update :delete_attachment!, if: :delete_attachment
   # before_update :reprocess_images_if_context_changed
 
-  [ :link_text, :link, :body ].each do |property|
-    define_method "has_#{property.to_s}?" do
+  %i[link_text link body].each do |property|
+    define_method "has_#{property}?" do
       has_value property
     end
   end
@@ -38,7 +40,7 @@ class Spree::Content < ActiveRecord::Base
   end
 
   def hide_title?
-    self.hide_title == true
+    hide_title == true
   end
 
   def rendered_body
@@ -50,12 +52,12 @@ class Spree::Content < ActiveRecord::Base
   end
 
   def attachment_sizes
-    case self.context
-      when 'slideshow'
-        sizes = default_attachment_sizes.merge(slide: '955x476#')
-      else
-        sizes = default_attachment_sizes
-    end
+    sizes = case context
+            when 'slideshow'
+              default_attachment_sizes.merge(slide: '955x476#')
+            else
+              default_attachment_sizes
+            end
     sizes
   end
 
@@ -63,11 +65,11 @@ class Spree::Content < ActiveRecord::Base
     write_attribute :context, value.to_s.parameterize
   end
 
-private
+  private
 
   def delete_attachment!
     del = delete_attachment.to_s
-    self.attachment = nil if del == "1" || del == "true"
+    self.attachment = nil if del == '1' || del == 'true'
     true
   end
 
@@ -77,7 +79,7 @@ private
   end
 
   def has_value(selector)
-    v = self.send selector
+    v = send selector
     v && !v.to_s.blank?
   end
 end

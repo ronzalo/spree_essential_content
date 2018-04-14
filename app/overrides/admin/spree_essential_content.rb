@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Adds the Content button to the admin tabs
 Deface::Override.new(
   virtual_path: 'spree/layouts/admin',
@@ -8,9 +10,9 @@ Deface::Override.new(
 
 # Adds configuration links to the configurations sidebar
 Deface::Override.new(
-  virtual_path:  "spree/admin/shared/sub_menu/_configuration",
-  name:          "add_essential_content_settings_sidebar",
+  virtual_path:  'spree/admin/shared/sub_menu/_configuration',
+  name:          'add_essential_content_settings_sidebar',
   insert_bottom: "[data-hook='admin_configurations_sidebar_menu'], #admin_configurations_sidebar_menu[data-hook]",
-  partial:       "spree/admin/shared/blog_config",
+  partial:       'spree/admin/shared/blog_config',
   disabled:      false
 )

@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 module Spree
   class PostCategoriesController < StoreController
-
     helper 'spree/blogs/posts'
 
     before_action :get_blog
-    before_action :get_sidebar, only: [:index, :search, :show]
+    before_action :get_sidebar, only: %i[index search show]
 
     def show
       @category = Spree::PostCategory.find_by_permalink(params[:id])
@@ -16,7 +17,7 @@ module Spree
       ]
     end
 
-  private
+    private
 
     def default_scope
       @blog.posts.live
@@ -35,6 +36,5 @@ module Spree
     def get_blog
       @blog = Spree::Blog.find_by_permalink!(Spree::Blog.normalize_permalink(params[:blog_id]))
     end
-
   end
 end

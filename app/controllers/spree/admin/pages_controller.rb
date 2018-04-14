@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 module Spree
   module Admin
     class PagesController < ResourceController
       def location_after_save
         case params[:action]
-          when "create"
-            edit_admin_page_content_path(@page, @page.contents.first)
-          else
-            admin_page_path(@page)
+        when 'create'
+          edit_admin_page_content_path(@page, @page.contents.first)
+        else
+          admin_page_path(@page)
         end
       end
 
@@ -15,16 +17,17 @@ module Spree
       end
 
       private
-        def find_resource
-          @object ||= Spree::Page.friendly.find(params[:id])
-        end
 
-        def collection
-          params[:q] ||= {}
-          params[:q][:s] ||= "position asc"
-          @search = Spree::Page.search(params[:q])
-          @collection = @search.result.page(params[:page]).per(Spree::Config[:admin_orders_per_page])
-        end
+      def find_resource
+        @object ||= Spree::Page.friendly.find(params[:id])
+      end
+
+      def collection
+        params[:q] ||= {}
+        params[:q][:s] ||= 'position asc'
+        @search = Spree::Page.search(params[:q])
+        @collection = @search.result.page(params[:page]).per(Spree::Config[:admin_orders_per_page])
+      end
     end
   end
 end

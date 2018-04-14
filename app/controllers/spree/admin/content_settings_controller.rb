@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Spree
   module Admin
     class ContentSettingsController < BaseController
       def edit
-        @preferences = [
-          'disqus_shortname', 'sharethis_publisher_id', 'show_posts_on_homepage',
-          'show_products_on_homepage', 'show_taxons_on_homepage'
+        @preferences = %w[
+          disqus_shortname sharethis_publisher_id show_posts_on_homepage
+          show_products_on_homepage show_taxons_on_homepage
         ]
         @config = Spree::ContentConfiguration.new
       end
@@ -17,10 +19,9 @@ module Spree
           config[name] = value
         end
 
-        flash[:success] = Spree.t(:successfully_updated, :resource => Spree.t('essential_content.admin.content_settings'))
+        flash[:success] = Spree.t(:successfully_updated, resource: Spree.t('essential_content.admin.content_settings'))
         redirect_to edit_admin_content_settings_path
       end
-
     end
   end
 end

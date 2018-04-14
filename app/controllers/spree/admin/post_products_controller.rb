@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module Spree
   module Admin
     class PostProductsController < ResourceController
-
       before_action :load_data
       create.before :set_post_and_product
 

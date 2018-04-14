@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Spree::Admin::PageImagesController < Spree::Admin::ResourceController
   before_action :load_data
 
@@ -22,5 +24,4 @@ class Spree::Admin::PageImagesController < Spree::Admin::ResourceController
   def destroy_before
     @viewable = @page_image.viewable
   end
-
 end

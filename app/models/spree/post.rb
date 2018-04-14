@@ -1,42 +1,44 @@
+# frozen_string_literal: true
+
 class Spree::Post < ActiveRecord::Base
   acts_as_taggable
 
   # for flash messages
   alias_attribute :name, :title
 
-  has_and_belongs_to_many :post_categories, join_table: "spree_post_categories_posts", class_name: "Spree::PostCategory"
+  has_and_belongs_to_many :post_categories, join_table: 'spree_post_categories_posts', class_name: 'Spree::PostCategory'
   alias_attribute :categories, :post_categories
 
-  belongs_to :blog, class_name: "Spree::Blog"
+  belongs_to :blog, class_name: 'Spree::Blog'
   has_many :post_products, dependent: :destroy
   has_many :products, through: :post_products
-  has_many :images, -> { order(:position) }, as: :viewable, dependent: :destroy, class_name: "Spree::PostImage"
+  has_many :images, -> { order(:position) }, as: :viewable, dependent: :destroy, class_name: 'Spree::PostImage'
 
   validates :blog_id, :title, presence: true
-  validates :path,  presence: true, uniqueness: true, if: proc{ |record| !record.title.blank? }
+  validates :path,  presence: true, uniqueness: true, if: proc { |record| !record.title.blank? }
   validates :body,  presence: true
   validates :posted_at, datetime: true
 
   cattr_reader :per_page
   @@per_page = 10
 
-  scope :ordered, -> { order("posted_at DESC") }
-  scope :future, -> { where("posted_at > ?", Time.now).order("posted_at ASC") }
-  scope :past, -> { where("posted_at <= ?", Time.now).ordered }
-  scope :live, -> { where(live: true ) }
+  scope :ordered, -> { order('posted_at DESC') }
+  scope :future, -> { where('posted_at > ?', Time.now).order('posted_at ASC') }
+  scope :past, -> { where('posted_at <= ?', Time.now).ordered }
+  scope :live, -> { where(live: true) }
   scope :web, -> { live.past.ordered }
 
-  before_validation :create_path, if: proc{ |record| record.title_changed? }
+  before_validation :create_path, if: proc { |record| record.title_changed? }
 
   # Creates date-part accessors for the posted_at timestamp for grouping purposes.
-  %w(day month year).each do |method|
+  %w[day month year].each do |method|
     define_method method do
-      self.posted_at.send(method)
+      posted_at.send(method)
     end
   end
 
   def rendered_preview
-    preview = body.split("<hr />")[0]
+    preview = body.split('<hr />')[0]
     render(preview)
   end
 
@@ -44,7 +46,7 @@ class Spree::Post < ActiveRecord::Base
     new_body = body
 
     images.each_with_index do |image, index|
-      new_body.gsub! "[Image_#{index+1}]", ActionController::Base.helpers.image_tag(image.attachment.url(:large), alt: image.alt.blank? ? "#{title} - Photo #{index + 1}" : image.alt)
+      new_body.gsub! "[Image_#{index + 1}]", ActionController::Base.helpers.image_tag(image.attachment.url(:large), alt: image.alt.blank? ? "#{title} - Photo #{index + 1}" : image.alt)
     end
     rendered = render(new_body)
     rendered
@@ -76,25 +78,25 @@ class Spree::Post < ActiveRecord::Base
 
   private
 
-    def render(val)
-      val = val.is_a?(Symbol) ? send(val) : val
-      val.html_safe
-    end
+  def render(val)
+    val = val.is_a?(Symbol) ? send(val) : val
+    val.html_safe
+  end
 
-    def create_path
-      count = 2
-      new_path = title.to_s.parameterize
-      exists = path_exists?(new_path)
-      while exists do
-        dupe_path = "#{new_path}-#{count}"
-        exists = path_exists?(dupe_path)
-        count += 1
-      end
-      self.path = dupe_path || new_path
+  def create_path
+    count = 2
+    new_path = title.to_s.parameterize
+    exists = path_exists?(new_path)
+    while exists
+      dupe_path = "#{new_path}-#{count}"
+      exists = path_exists?(dupe_path)
+      count += 1
     end
+    self.path = dupe_path || new_path
+  end
 
-    def path_exists?(new_path)
-      post = Spree::Post.find_by_path(new_path)
-      post != nil && !(post == self)
-    end
+  def path_exists?(new_path)
+    post = Spree::Post.find_by_path(new_path)
+    !post.nil? && post != self
+  end
 end

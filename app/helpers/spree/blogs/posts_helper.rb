@@ -1,5 +1,6 @@
-module Spree::Blogs::PostsHelper
+# frozen_string_literal: true
 
+module Spree::Blogs::PostsHelper
   def post_seo_path(blog, post)
     spree.full_post_path(blog, post.year, post.month, post.day, post.to_param)
   end
@@ -16,5 +17,4 @@ module Spree::Blogs::PostsHelper
     output << post.rendered_body
     output.join("\n").html_safe
   end
-
 end

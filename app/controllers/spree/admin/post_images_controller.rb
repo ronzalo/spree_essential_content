@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module Spree
   module Admin
     class PostImagesController < ResourceController
-
       before_action :load_data
 
       create.before :set_viewable
@@ -25,7 +26,6 @@ module Spree
       def destroy_before
         @viewable = @post_image.viewable
       end
-
     end
   end
 end
