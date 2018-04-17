@@ -58,7 +58,7 @@
       <td class="actions actions-4 text-right" data-hook="admin_pages_index_row_actions">
         <%= link_to_with_icon 'search', Spree.t('essential_content.page.preview'), page_url(page), onclick: 'window.open(this.href);return false;', no_text: true, class: 'btn btn-info btn-sm' %> &nbsp;
         <%= link_to_with_icon 'list', Spree.t('essential_content.page.contents'), admin_page_contents_path(page), no_text: true, class: 'btn btn-info btn-sm' %> &nbsp;
-        <%= link_to_edit page, no_text: true, class: 'edit' %>
+        <%= link_to_edit page, no_text: true, class: 'edit' %> &nbsp;
         <%= link_to_with_icon 'translate', nil, spree.admin_translations_path('pages', page.path), title: Spree.t(:'i18n.translations'), class: 'btn btn-sm btn-primary' %> &nbsp;
         <%= link_to_delete page, no_text: true %>
       </td>

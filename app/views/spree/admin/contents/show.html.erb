@@ -2,7 +2,7 @@
 
 <h2>Content: <%= h @content.title %></h2>
 
-<%= @content.body.html_safe %>
+<%= @content.body.html_safe if @content.body %>
 
 <p>
   <%= link_to_edit @content %>

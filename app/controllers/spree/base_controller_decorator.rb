@@ -8,11 +8,11 @@ Spree::BaseController.class_eval do
     puts '*' * 50
     puts locale
     puts '*' * 50
-    @page ||= Spree::Page.find_by_path(request.path)
+    @page ||= Spree::Page.find_by_path(params[:path])
   end
 
   def get_pages
-    return if request.path =~ /^\/+admin/
+    return if params[:path] =~ /^\/+admin/
     @pages ||= Spree::Page.visible.order(:position)
   end
 end

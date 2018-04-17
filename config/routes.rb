@@ -39,6 +39,8 @@ Spree::Core::Engine.append_routes do
     resource :content_settings, only: [:edit, :update]
   end
 
+  # filter :locale
+
   constraints(Spree::PossibleBlog) do
     constraints(
       :year  => /\d{4}/,
@@ -55,7 +57,7 @@ Spree::Core::Engine.append_routes do
     get ":blog_id"                => "posts#index",          :as => :blog_posts
   end
 
-  constraints(Spree::PossiblePage) do
-    get ':path', to: 'pages#show', as: 'page'
-  end
+  # constraints(Spree::PossiblePage) do
+    get 'pages/:path', to: 'pages#show', as: 'page'
+  # end
 end

@@ -25,6 +25,8 @@
       <td class="actions" data-hook="admin_page_contents_index_row_actions">
         <%= link_to_edit content, no_text: true, class: 'edit' %>
         &nbsp;
+        <%= link_to_with_icon 'translate', nil, spree.admin_translations_path('contents', content.id), title: Spree.t(:'i18n.translations'), class: 'btn btn-sm btn-primary' %>
+        &nbsp;
         <%= link_to_delete content, no_text: true %>
       </td>
     </tr>

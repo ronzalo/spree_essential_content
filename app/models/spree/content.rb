@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Spree::Content < ActiveRecord::Base
+  translates :title, :body, :link, :link_text, :context, fallbacks_for_empty_translations: true
+  include SpreeGlobalize::Translatable
+
   attr_accessor :delete_attachment
 
   acts_as_list scope: :page
