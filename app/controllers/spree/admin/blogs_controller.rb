@@ -10,7 +10,7 @@ module Spree
       private
 
       def find_resource
-        Spree::Blog.find_by_permalink!(params[:id])
+        Spree::Blog.friendly.find(params[:id])
       end
 
       def collection

@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class Spree::Post < ActiveRecord::Base
+  translates :title, :teaser, :body, fallbacks_for_empty_translations: true
+  include SpreeGlobalize::Translatable
+
+  extend FriendlyId
+  friendly_id :path
+
   acts_as_taggable
 
   # for flash messages
@@ -29,6 +35,8 @@ class Spree::Post < ActiveRecord::Base
   scope :web, -> { live.past.ordered }
 
   before_validation :create_path, if: proc { |record| record.title_changed? }
+
+  self.whitelisted_ransackable_attributes = %w[title blog_id]
 
   # Creates date-part accessors for the posted_at timestamp for grouping purposes.
   %w[day month year].each do |method|

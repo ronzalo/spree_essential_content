@@ -81,6 +81,10 @@ RSpec.configure do |config|
       @driver.quit
     end
   end
+
+  config.before do
+    I18n.locale = I18n.default_locale
+  end
 end
 
 module Spree

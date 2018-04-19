@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class Spree::Blog < ActiveRecord::Base
+  translates :name, :permalink, fallbacks_for_empty_translations: true
+  include SpreeGlobalize::Translatable
+
+  extend FriendlyId
+  friendly_id :permalink
+
   RESERVED_PATHS = /(^\/+(admin|account|cart|checkout|content|login|logout|pg\/|orders|products|s\/|session|signup|shipments|states|t\/|tax_categories|user|paypal)+)/
 
   has_many :posts, class_name: 'Spree::Post', dependent: :destroy
